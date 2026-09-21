@@ -7,3 +7,13 @@ A proposta tem duas formas complementares de explorar o acervo: uma navegação 
 Neste primeiro momento, vamos desenvolver um frontend funcional usando os dados reais fornecidos pela equipe. A fonte temporária será um JSON estruturado de forma semelhante à futura WordPress REST API, para que depois o frontend possa ser integrado ao WordPress sem precisar ser refeito.
 
 A primeira entrega, na primeira semana de outubro, serve principalmente para validar a experiência e a solução técnica de navegação/visualização. A entrega final está prevista para 3 de novembro de 2026.
+
+## Frontend
+
+Requer Node.js 22.12+ ou 24+. Instale as dependências com `npm install` e inicie com `npm run dev`.
+
+- `npm run build`: gera o site em `dist/`.
+- `npm run preview`: abre a versão compilada em servidor local.
+- `npm test`: verifica os filtros, a consistência das relações e os endereços dos vídeos.
+
+A primeira versão oferece galeria, navegação em rede, busca, filtros e player, usando `data/videos.json`. Referências, decisões e integração futura estão em [docs/frontend.md](docs/frontend.md).
