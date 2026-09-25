@@ -20,7 +20,6 @@ document.querySelector('#app').innerHTML = `
       <div id="active-filters" class="active-filters"></div>
       <div id="results" tabindex="-1"></div>
     </section>
-    <section id="about" class="about"><p class="eyebrow">SOBRE O ACERVO</p><h2>Um acervo. Muitas relações.</h2><p>Vídeos de pesquisa, registros culturais e histórias de vida reunidos pelo laboratório DHIS. Explore pela galeria ou navegue em rede para descobrir como projetos, temas e lugares se conectam.</p></section>
   </main><footer><span>DHIS <span class="footer-dot">●</span> Design e histórias</span><span>Acervo audiovisual</span></footer>
   <dialog id="video-dialog" aria-labelledby="video-title"><button class="close-dialog" aria-label="Fechar vídeo">×</button><div id="video-content"></div></dialog>`;
 
