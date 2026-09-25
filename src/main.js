@@ -1,8 +1,10 @@
 import './style.css';
 import { facets, loadVideos, filterVideos } from './data.js';
 import { createGraph } from './graph.js';
+import { requireAccess } from './auth.js';
 
 const escape = text => String(text).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+await requireAccess();
 const videos = await loadVideos();
 const params = new URLSearchParams(location.search);
 const state = { view: params.get('view') === 'network' ? 'network' : 'gallery', query: params.get('q') || '', filters: Object.fromEntries(facets.map(f => [f.key, params.get(f.key) || ''])), dimension: 'projeto' };
@@ -55,7 +57,8 @@ const dialog = document.querySelector('#video-dialog');
 function openVideo(id) {
   const video = videos.find(v => v.id === id);
   if (!video) return;
-  document.querySelector('#video-content').innerHTML = `${video.youtubeId ? `<div class="player"><iframe src="https://www.youtube-nocookie.com/embed/${video.youtubeId}" title="${escape(video.title)}" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe></div>` : '<div class="player unavailable">Reprodução indisponível para este endereço.</div>'}<div class="video-description"><p class="eyebrow">${escape(video.projeto.join(' / '))}</p><h2 id="video-title">${escape(video.title)}</h2><div class="video-tags">${facets.flatMap(f => video[f.key].map(value => `<button data-term-facet="${f.key}" data-term="${escape(value)}"><span>${f.label}</span>${escape(value)}</button>`)).join('')}</div>${video.youtubeId ? `<a class="youtube-link" href="https://www.youtube.com/watch?v=${video.youtubeId}" target="_blank" rel="noopener noreferrer">Abrir no YouTube ↗</a>` : ''}</div>`;
+  const metadata = facets.filter(f => video[f.key].length).map(f => `<div class="video-tag-group"><span>${f.label}</span><div class="video-tag-values">${video[f.key].map(value => `<button data-term-facet="${f.key}" data-term="${escape(value)}">${escape(value)}</button>`).join('')}</div></div>`).join('');
+  document.querySelector('#video-content').innerHTML = `${video.youtubeId ? `<div class="player"><iframe src="https://www.youtube-nocookie.com/embed/${video.youtubeId}" title="${escape(video.title)}" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe></div>` : '<div class="player unavailable">Reprodução indisponível para este endereço.</div>'}<div class="video-description"><p class="eyebrow">${escape(video.projeto.join(' / '))}</p><h2 id="video-title">${escape(video.title)}</h2><div class="video-tags">${metadata}</div>${video.youtubeId ? `<a class="youtube-link" href="https://www.youtube.com/watch?v=${video.youtubeId}" target="_blank" rel="noopener noreferrer">Abrir no YouTube ↗</a>` : ''}</div>`;
   dialog.showModal();
   document.body.classList.add('modal-open');
 }
