@@ -11,7 +11,7 @@ const state = { view: params.get('view') === 'network' ? 'network' : 'gallery', 
 let graph;
 document.querySelector('#app').innerHTML = `
   <a class="skip" href="#results">Pular para o acervo</a>
-  <header class="header"><a href="./" aria-label="Acervo DHIS, início"><img class="logo" src="${import.meta.env.BASE_URL}dhis-logo.png" alt="DHIS — Laboratório de Design e histórias"></a><div class="header-right"><span>Laboratório de Design e histórias</span><a href="#about">Sobre o acervo <span aria-hidden="true">↗</span></a></div></header>
+  <header class="header"><a href="./" aria-label="Acervo DHIS, início"><img class="logo" src="${import.meta.env.BASE_URL}dhis-logo.png" alt="DHIS — Laboratório de Design e histórias"></a></header>
   <main>
     <section class="intro"><div><p class="eyebrow">MEMÓRIA, CULTURA E CONEXÕES</p><h1>Histórias que se encontram.</h1><p class="intro-copy">Explore o acervo audiovisual do DHIS. Percorra projetos, descubra relações<br class="desktop"> e conheça as pessoas e os lugares que fazem parte dessas histórias.</p></div><div class="archive-count"><strong>${String(videos.length).padStart(2, '0')}</strong><span>vídeos no acervo<br>múltiplos caminhos</span></div></section>
     <section class="explorer" aria-label="Explorar acervo">
