@@ -1,4 +1,4 @@
-const PASSWORD_HASH = 'a09221520c084a71114bf6ccd7a4e9397727a9257a3a00d3d146d81d1027b907';
+const PASSWORD_HASH = '65ede29a424d62280361d2d5b42c2ffe5205c5411e45f8afe55ef20af6a96896';
 const ACCESS_KEY = 'dhis-access';
 
 async function hash(value) {
