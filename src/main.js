@@ -11,10 +11,10 @@ const state = { view: params.get('view') === 'network' ? 'network' : 'gallery', 
 let graph;
 document.querySelector('#app').innerHTML = `
   <a class="skip" href="#results">Pular para o acervo</a>
-  <header class="header"><a href="./" aria-label="Acervo DHIS, início"><img class="logo" src="${import.meta.env.BASE_URL}dhis-logo.png" alt="DHIS — Laboratório de Design e histórias"></a></header>
+  <header class="header"><a href="./" aria-label="Acervo DHIS, início"><img class="logo" src="${import.meta.env.BASE_URL}dhis-logo.png" alt="DHIS — Laboratório de Design e histórias"></a><div class="view-switch" role="group" aria-label="Modo de visualização"><button data-view="gallery">▦ <span>Galeria</span></button><button data-view="network">⌘ <span>Em rede</span></button></div></header>
   <main>
     <section class="explorer" aria-label="Explorar acervo">
-      <div class="toolbar"><div class="view-switch" role="group" aria-label="Modo de visualização"><button data-view="gallery">▦ <span>Galeria</span></button><button data-view="network">⌘ <span>Em rede</span></button></div><label class="search"><span aria-hidden="true">⌕</span><input id="search" type="search" placeholder="Buscar histórias, lugares, temas…" aria-label="Buscar no acervo" value="${escape(state.query)}"><kbd>/</kbd></label></div>
+      <div class="toolbar"><label class="search"><span aria-hidden="true">⌕</span><input id="search" type="search" placeholder="Buscar histórias, lugares, temas…" aria-label="Buscar no acervo" value="${escape(state.query)}"></label></div>
       <div class="filters">${facets.map(f => `<label><span>${f.label}</span><select data-facet="${f.key}" aria-label="Filtrar por ${f.label.toLowerCase()}"><option value="">${f.key === 'ano' ? 'Todos os anos' : 'Todos'}</option>${[...new Set(videos.flatMap(v => v[f.key]))].sort((a,b) => f.key === 'ano' ? Number(b)-Number(a) : a.localeCompare(b, 'pt-BR')).map(v => `<option value="${escape(v)}" ${state.filters[f.key] === v ? 'selected' : ''}>${escape(v)}</option>`).join('')}</select></label>`).join('')}</div>
       <div class="results-bar"><p id="result-count" role="status" aria-live="polite"></p><button id="clear" class="text-button">Limpar filtros <span aria-hidden="true">×</span></button></div>
       <div id="active-filters" class="active-filters"></div>
