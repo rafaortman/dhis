@@ -9,13 +9,20 @@ export function createGraph(container, videos, dimension, onVideo, onTerm) {
       { selector: 'node', style: { label: 'data(label)', color: '#f6f6f6', 'font-family': 'Chivo, sans-serif', 'font-size': 11, 'text-valign': 'bottom', 'text-margin-y': 8, 'text-wrap': 'ellipsis', 'text-max-width': 125, 'text-outline-color': '#161616', 'text-outline-width': 2 } },
       { selector: 'node[kind="video"]', style: { shape: 'round-rectangle', width: 88, height: 52, 'background-color': '#363636', 'background-image': 'data(image)', 'background-fit': 'cover', 'border-width': 1, 'border-color': '#a8a8a8' } },
       { selector: 'node[kind="term"]', style: { width: 13, height: 13, 'background-color': 'data(color)', 'font-size': 12 } },
-      { selector: 'edge', style: { width: 0.8, 'line-color': 'data(color)', opacity: 0.22, 'curve-style': 'haystack' } },
+      { selector: 'edge', style: { width: 1, 'line-color': 'data(color)', opacity: 0.55, 'curve-style': 'haystack' } },
       { selector: '.muted', style: { opacity: 0.1 } },
       { selector: 'edge.highlight', style: { width: 2, opacity: 0.95 } },
       { selector: 'node.highlight', style: { 'border-width': 3, 'border-color': '#e8782f' } },
     ],
-    layout: { name: 'cose', animate: false, padding: 65, nodeRepulsion: () => 16000, idealEdgeLength: () => 150, nodeOverlap: 25, randomize: false },
+    layout: { name: 'cose', animate: false, padding: 20, nodeRepulsion: () => 9000, idealEdgeLength: () => 100, nodeOverlap: 25, randomize: false },
   });
+  // Estica o layout até a proporção do contêiner para aproveitar a largura da tela.
+  const box = cy.nodes().boundingBox(), width = cy.width(), height = cy.height();
+  if (box.w > 0 && box.h > 0 && width > 0 && height > 0) {
+    const pad = 60, sx = (width - pad * 2) / box.w, sy = (height - pad * 2) / box.h, k = Math.min(Math.max(sx / sy, 1), 2.2);
+    cy.nodes().positions(node => ({ x: (node.position('x') - box.x1) * k, y: node.position('y') - box.y1 }));
+  }
+  cy.fit(undefined, 20);
   cy.on('tap', 'node', event => {
     const node = event.target;
     if (node.data('kind') === 'video') onVideo(node.data('videoId'));
@@ -30,5 +37,5 @@ export function createGraph(container, videos, dimension, onVideo, onTerm) {
   cy.on('mouseout', 'node', () => { cy.elements().removeClass('muted highlight'); container.style.cursor = ''; });
   const observer = new ResizeObserver(() => cy.resize());
   observer.observe(container);
-  return { fit: () => cy.fit(undefined, 65), zoom: factor => cy.zoom({ level: cy.zoom() * factor, renderedPosition: { x: cy.width() / 2, y: cy.height() / 2 } }), destroy: () => { observer.disconnect(); cy.destroy(); } };
+  return { fit: () => cy.fit(undefined, 20), zoom: factor => cy.zoom({ level: cy.zoom() * factor, renderedPosition: { x: cy.width() / 2, y: cy.height() / 2 } }), destroy: () => { observer.disconnect(); cy.destroy(); } };
 }
