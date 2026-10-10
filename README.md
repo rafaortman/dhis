@@ -17,3 +17,7 @@ Requer Node.js 22.12+ ou 24+. Instale as dependências com `npm install` e inici
 - `npm test`: verifica os filtros, a consistência das relações e os endereços dos vídeos.
 
 A primeira versão oferece galeria, navegação em rede, busca, filtros e player, usando `data/videos.json`. Referências, decisões e integração futura estão em [docs/frontend.md](docs/frontend.md).
+
+## Planilha como fonte de dados
+
+Está prevista a troca do `data/videos.json` por uma planilha do Google Sheets, lida por um script do Apps Script que devolve JSON ao site. Ainda não implementado. O plano e os procedimentos que a equipe deve seguir ao editar a planilha (ID fixo, cabeçalho estável, padronização de valores etc.) estão em [docs/planilha-backend.md](docs/planilha-backend.md).
