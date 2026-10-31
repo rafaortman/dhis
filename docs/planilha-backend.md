@@ -42,3 +42,11 @@ Os quatro primeiros são os críticos: sem eles o site pode quebrar sem aviso.
 
 - **Identificador:** usar a coluna `ID` da planilha; se ela não existir, usar o ID do vídeo no YouTube.
 - **Separador de múltiplos valores:** vírgula (padrão atual do `videos.json`) ou ponto e vírgula.
+
+## Script do Apps Script
+
+O código está em [`docs/apps-script/Code.gs`](apps-script/Code.gs). Ainda não foi implantado nem ligado ao site (a integração fica para depois).
+
+Para implantar: na planilha, **Extensões > Apps Script**, colar o código no `Code.gs` e salvar; depois **Implantar > Nova implantação > App da Web**, com "Executar como: Eu" e "Quem pode acessar: Qualquer pessoa", de preferência logado com a conta institucional. A URL terminada em `/exec` é o endereço que o site vai consultar. Alterações no script exigem **Gerenciar implantações > Editar > Nova versão**.
+
+O script usa a aba `SITE`, ou a primeira aba com cabeçalho `NOME` e `LINK`; ignora linhas sem nome ou sem link do YouTube e repetidas; e, se existir a coluna `PUBLICAR`, só inclui as marcadas "sim".
