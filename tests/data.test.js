@@ -4,7 +4,7 @@ import { loadVideos, filterVideos, graphElements, youtubeId } from '../src/data.
 
 test('base real: IDs únicos e relações do grafo apontam para nós existentes', async () => {
   const videos = await loadVideos();
-  assert.equal(videos.length, 46);
+  assert.equal(videos.length, 246);
   assert.equal(new Set(videos.map(v => v.id)).size, videos.length);
   const elements = graphElements(videos, 'all');
   const nodes = new Set(elements.filter(e => !e.data.source).map(e => e.data.id));
