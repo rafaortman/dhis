@@ -37,7 +37,8 @@ function render() {
   const visible = state.view === 'gallery' ? filtered.slice(state.page * pageSize(), (state.page + 1) * pageSize()) : filtered;
   const pagination = document.querySelector('#pagination');
   pagination.hidden = state.view !== 'gallery' || pages < 2;
-  pagination.innerHTML = pagination.hidden ? '' : `<button data-page="${state.page - 1}" aria-label="Página anterior" ${state.page === 0 ? 'disabled' : ''}>‹</button>${Array.from({ length: pages }, (_, i) => `<button data-page="${i}" aria-label="Página ${i + 1}" ${i === state.page ? 'aria-current="page"' : ''}>${i + 1}</button>`).join('')}<button data-page="${state.page + 1}" aria-label="Próxima página" ${state.page === pages - 1 ? 'disabled' : ''}>›</button>`;
+  const first = state.page === 0, last = state.page === pages - 1;
+  pagination.innerHTML = pagination.hidden ? '' : `<button data-page="0" aria-label="Primeira página" ${first ? 'disabled' : ''}>«</button><button data-page="${state.page - 1}" aria-label="Página anterior" ${first ? 'disabled' : ''}>‹</button><label class="page-field"><span class="sr-only">Página atual</span><input id="page-input" type="number" inputmode="numeric" min="1" max="${pages}" value="${state.page + 1}"><span aria-hidden="true">de ${pages}</span></label><button data-page="${state.page + 1}" aria-label="Próxima página" ${last ? 'disabled' : ''}>›</button><button data-page="${pages - 1}" aria-label="Última página" ${last ? 'disabled' : ''}>»</button>`;
   document.querySelectorAll('[data-view]').forEach(button => { const selected = button.dataset.view === state.view; button.hidden = selected; });
   document.querySelectorAll('[data-facet]').forEach(select => { select.value = state.filters[select.dataset.facet]; });
   document.querySelector('#result-count').textContent = `${filtered.length} ${filtered.length === 1 ? 'vídeo' : 'vídeos'}${filtered.length !== videos.length ? ` de ${videos.length}` : ''} · ${state.view === 'gallery' ? 'Explore as histórias do acervo' : 'Descubra o que conecta cada história'}`;
@@ -91,3 +92,10 @@ document.querySelector('#search').addEventListener('input', event => { state.pag
 document.addEventListener('keydown', event => { if (event.key === '/' && !['INPUT', 'SELECT', 'TEXTAREA'].includes(document.activeElement.tagName) && !dialog.open) { event.preventDefault(); document.querySelector('#search').focus(); } });
 mobile.addEventListener('change', render);
 render();
+document.querySelector('#pagination').addEventListener('change', event => {
+  if (event.target.id !== 'page-input') return;
+  const total = Math.ceil(filterVideos(videos, state.query, state.filters).length / pageSize());
+  const value = Math.round(Number(event.target.value));
+  state.page = Number.isFinite(value) ? Math.min(Math.max(value, 1), total) - 1 : state.page;
+  render();
+});
