@@ -1,10 +1,8 @@
 import './style.css';
 import { facets, loadVideos, filterVideos } from './data.js';
 import { createGraph } from './graph.js';
-import { requireAccess } from './auth.js';
 
 const escape = text => String(text).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
-await requireAccess();
 const videos = await loadVideos();
 const params = new URLSearchParams(location.search);
 const state = { view: params.get('view') === 'network' ? 'network' : 'gallery', query: params.get('q') || '', filters: Object.fromEntries(facets.map(f => [f.key, params.get(f.key) || ''])), dimension: 'projeto', page: 0 };
